@@ -1,0 +1,15 @@
+{
+  "global_config": {
+    "config_vars": "List of global config vars"
+  },
+  "test_args": {
+    "config_vars": "List of test script specific vars"
+  },
+  "test_json_albums": {
+    "url": "https://jsonplaceholder.typicode.com/albums"
+  },
+  "test_json_users": {
+    "url": "https://jsonplaceholder.typicode.com/users",
+    "mandate_params": ["id", "name", "username", "email", "phone"]
+  }
+}
