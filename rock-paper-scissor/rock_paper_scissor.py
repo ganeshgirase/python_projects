@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 
-class GAMEMOVE(Enum):
+class GameMove(Enum):
     PAPER = 1
     ROCK = 2
     SCISSOR = 3
@@ -13,7 +13,7 @@ class GAMEMOVE(Enum):
 @dataclass
 class Player:
     id: str
-    move: GAMEMOVE = GAMEMOVE.PAPER
+    move: GameMove = GameMove.PAPER
 
 
 class Judge:
@@ -22,11 +22,11 @@ class Judge:
         logging.debug("Player Moves:- ", player.move, opponent.move)
         if player.move == opponent.move:
             return None
-        if player.move == GAMEMOVE.PAPER and opponent.move == GAMEMOVE.ROCK:
+        if player.move == GameMove.PAPER and opponent.move == GameMove.ROCK:
             return player
-        if player.move == GAMEMOVE.ROCK and opponent.move == GAMEMOVE.SCISSOR:
+        if player.move == GameMove.ROCK and opponent.move == GameMove.SCISSOR:
             return player
-        if player.move == GAMEMOVE.SCISSOR and opponent.move == GAMEMOVE.PAPER:
+        if player.move == GameMove.SCISSOR and opponent.move == GameMove.PAPER:
             return player
         return opponent
 
@@ -38,7 +38,7 @@ class UserQuitsException(Exception):
     pass
 
 
-class USERMESSAGE:
+class UserMessage:
     Welcome = "! Welcome to the rock-paper-scissor game !!!\n\n"
     InvalidInput = "Sorry, we cannot understand your input !!"
     Congratulations = "****  Hooray! You are winner! ****"
@@ -52,15 +52,15 @@ class Scorer:
 
     @staticmethod
     def congratulate_player():
-        Console.write(USERMESSAGE.Congratulations)
+        Console.write(UserMessage.Congratulations)
 
     @staticmethod
     def condole_player():
-        Console.write(USERMESSAGE.Condole)
+        Console.write(UserMessage.Condole)
 
     @staticmethod
     def declare_draw():
-        Console.write(USERMESSAGE.Draw)
+        Console.write(UserMessage.Draw)
 
 
 class Console:
@@ -76,8 +76,8 @@ class Console:
 
 
 class Administrator:
-    def __get_system_user_choice(self) -> GAMEMOVE:
-        choice = random.choice(list(GAMEMOVE))
+    def __get_system_user_choice(self) -> GameMove:
+        choice = random.choice(list(GameMove))
         logging.debug(f"System choice:- {choice}")
         return choice
 
@@ -89,23 +89,23 @@ class Administrator:
 
     def get_user_input(self) -> str:
         Console.write("Enter your choice of move from below")
-        for move in list(GAMEMOVE):
+        for move in list(GameMove):
             Console.write(f" => {move.name} | {move.value}")
         return Console.read("What do you want to choose?: ").strip()
 
-    def get_user_choice(self) -> GAMEMOVE:
+    def get_user_choice(self) -> GameMove:
         choice = self.get_user_input().upper()
         logging.debug(f"User provided choice with :- {choice}")
         if choice in ("1", "PAPER"):
-            return GAMEMOVE.PAPER
+            return GameMove.PAPER
         if choice in ("2", "ROCK"):
-            return GAMEMOVE.ROCK
+            return GameMove.ROCK
         if choice in ("3", "SCISSOR"):
-            return GAMEMOVE.SCISSOR
-        Console.write(USERMESSAGE.InvalidInput)
+            return GameMove.SCISSOR
+        Console.write(UserMessage.InvalidInput)
         if self.is_user_interested_to_play():
             return self.get_user_choice()
-        raise UserQuitsException(USERMESSAGE.QuitGame)
+        raise UserQuitsException(UserMessage.QuitGame)
 
     def is_system_winner(self, player: Player) -> bool:
         return player.id == 0
@@ -137,7 +137,7 @@ class Administrator:
             Scorer.congratulate_player()
 
     def play_game(self) -> None:
-        Console.write(USERMESSAGE.Welcome)
+        Console.write(UserMessage.Welcome)
         player = self.get_player()
         system_player = self.get_system_player()
         run = True
@@ -147,7 +147,7 @@ class Administrator:
                 run = self.is_user_interested_to_play()
             except UserQuitsException:
                 run = False
-        Console.write(USERMESSAGE.GoodBye)
+        Console.write(UserMessage.GoodBye)
 
 
 if __name__ == "__main__":

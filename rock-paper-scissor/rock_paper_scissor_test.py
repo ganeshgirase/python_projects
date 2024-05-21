@@ -2,15 +2,15 @@ import unittest
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-from rock_paper_scissor import Judge, Administrator, Scorer, Player, GAMEMOVE, Console, USERMESSAGE, UserQuitsException
+from rock_paper_scissor import Judge, Administrator, Scorer, Player, GameMove, USERMESSAGE, UserQuitsException
 
 class TestJudge(TestCase):
 
     def test_should_return_correct_winner_for_paper_rock_combination(self):
         combinations = (
-            (GAMEMOVE.PAPER, GAMEMOVE.ROCK),
-            (GAMEMOVE.ROCK, GAMEMOVE.SCISSOR),
-            (GAMEMOVE.SCISSOR, GAMEMOVE.PAPER),
+            (GameMove.PAPER, GameMove.ROCK),
+            (GameMove.ROCK, GameMove.SCISSOR),
+            (GameMove.SCISSOR, GameMove.PAPER),
         )
         for (move1, move2) in combinations:
             player1 = Player(1, move1)
@@ -21,11 +21,11 @@ class TestJudge(TestCase):
             winner = Judge.get_winner(player2, player1)
             assert winner == player1, err
 
-    def test_should_return_none_if_both_player_choose_same_gamemove(self):
+    def test_should_return_none_if_both_player_choose_same_GameMove(self):
         err = "Incorrect result! Expected draw!! "
-        assert Judge.get_winner(Player(1, GAMEMOVE.ROCK), Player(1, GAMEMOVE.ROCK)) is None, err
-        assert Judge.get_winner(Player(1, GAMEMOVE.SCISSOR), Player(1, GAMEMOVE.SCISSOR)) is None, err
-        assert Judge.get_winner(Player(1, GAMEMOVE.PAPER), Player(1, GAMEMOVE.PAPER)) is None, err
+        assert Judge.get_winner(Player(1, GameMove.ROCK), Player(1, GameMove.ROCK)) is None, err
+        assert Judge.get_winner(Player(1, GameMove.SCISSOR), Player(1, GameMove.SCISSOR)) is None, err
+        assert Judge.get_winner(Player(1, GameMove.PAPER), Player(1, GameMove.PAPER)) is None, err
 
 class TestScorer(TestCase):
 
@@ -80,28 +80,28 @@ class TestAdministartor(TestCase):
     def test_should_get_user_choice_correct(self):
         self.admin.get_user_input = MagicMock()
         errmsg = "incorrect interpretation of user input of choice"
-        self.admin.get_user_input.return_value = str(GAMEMOVE.PAPER.value)
-        assert self.admin.get_user_choice() == GAMEMOVE.PAPER, errmsg
-        self.admin.get_user_input.return_value = str(GAMEMOVE.ROCK.value)
-        assert self.admin.get_user_choice() == GAMEMOVE.ROCK, errmsg
-        self.admin.get_user_input.return_value = str(GAMEMOVE.SCISSOR.value)
-        assert self.admin.get_user_choice() == GAMEMOVE.SCISSOR, errmsg
+        self.admin.get_user_input.return_value = str(GameMove.PAPER.value)
+        assert self.admin.get_user_choice() == GameMove.PAPER, errmsg
+        self.admin.get_user_input.return_value = str(GameMove.ROCK.value)
+        assert self.admin.get_user_choice() == GameMove.ROCK, errmsg
+        self.admin.get_user_input.return_value = str(GameMove.SCISSOR.value)
+        assert self.admin.get_user_choice() == GameMove.SCISSOR, errmsg
 
         # Test for string upper case values
-        self.admin.get_user_input.return_value = GAMEMOVE.PAPER.name
-        assert self.admin.get_user_choice() == GAMEMOVE.PAPER, errmsg
-        self.admin.get_user_input.return_value = GAMEMOVE.ROCK.name
-        assert self.admin.get_user_choice() == GAMEMOVE.ROCK, errmsg
-        self.admin.get_user_input.return_value = GAMEMOVE.SCISSOR.name
-        assert self.admin.get_user_choice() == GAMEMOVE.SCISSOR, errmsg
+        self.admin.get_user_input.return_value = GameMove.PAPER.name
+        assert self.admin.get_user_choice() == GameMove.PAPER, errmsg
+        self.admin.get_user_input.return_value = GameMove.ROCK.name
+        assert self.admin.get_user_choice() == GameMove.ROCK, errmsg
+        self.admin.get_user_input.return_value = GameMove.SCISSOR.name
+        assert self.admin.get_user_choice() == GameMove.SCISSOR, errmsg
 
         # Test for string values
         self.admin.get_user_input.return_value = "paper"
-        assert self.admin.get_user_choice() == GAMEMOVE.PAPER, errmsg
+        assert self.admin.get_user_choice() == GameMove.PAPER, errmsg
         self.admin.get_user_input.return_value = "rock"
-        assert self.admin.get_user_choice() == GAMEMOVE.ROCK, errmsg
+        assert self.admin.get_user_choice() == GameMove.ROCK, errmsg
         self.admin.get_user_input.return_value = "scissor"
-        assert self.admin.get_user_choice() == GAMEMOVE.SCISSOR, errmsg
+        assert self.admin.get_user_choice() == GameMove.SCISSOR, errmsg
 
     def test_get_user_choice_should_inform_player_about_incorrect_choice_input(self):
         self.admin.get_user_input = MagicMock()
