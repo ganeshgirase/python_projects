@@ -2,7 +2,7 @@ import unittest
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-from rock_paper_scissor import Judge, Administrator, Scorer, Player, GameMove, USERMESSAGE, UserQuitsException
+from rock_paper_scissor import Judge, Administrator, Scorer, Player, GameMove, UserMessage, UserQuitsException
 
 class TestJudge(TestCase):
 
@@ -32,17 +32,17 @@ class TestScorer(TestCase):
     @patch("rock_paper_scissor.Console")
     def test_congratulate_player(self, mock_console):
         Scorer.congratulate_player()
-        mock_console.write.assert_called_once_with(USERMESSAGE.Congratulations)
+        mock_console.write.assert_called_once_with(UserMessage.Congratulations)
 
     @patch("rock_paper_scissor.Console")
     def test_condole_player(self, mock_console):
         Scorer.condole_player()
-        mock_console.write.assert_called_once_with(USERMESSAGE.Condole)
+        mock_console.write.assert_called_once_with(UserMessage.Condole)
 
     @patch("rock_paper_scissor.Console")
     def test_declare_draw(self, mock_console):
         Scorer.declare_draw()
-        mock_console.write.assert_called_once_with(USERMESSAGE.Draw)
+        mock_console.write.assert_called_once_with(UserMessage.Draw)
 
 
 class TestAdministartor(TestCase):
@@ -108,8 +108,8 @@ class TestAdministartor(TestCase):
         with self.assertRaises(UserQuitsException) as exp, patch("rock_paper_scissor.Console") as mock_console:
             self.admin.get_user_input.return_value = "junk value"
             self.admin.get_user_choice()
-            mock_console.write.assert_called_with(USERMESSAGE.InvalidInput) 
-            self.assertEqual(str(exp.exception), USERMESSAGE.QuitGame)
+            mock_console.write.assert_called_with(UserMessage.InvalidInput) 
+            self.assertEqual(str(exp.exception), UserMessage.QuitGame)
 
     @patch("rock_paper_scissor.Judge")
     def test_check_play_method_behaving_correctly(self, mock_judge):
@@ -120,17 +120,17 @@ class TestAdministartor(TestCase):
             self.admin.get_player_choices.return_value = (player1, player2)            
             mock_judge.get_winner.return_value = player1
             self.admin.play(player1, player2)
-            mock_console.write.assert_called_once_with(USERMESSAGE.Congratulations)
+            mock_console.write.assert_called_once_with(UserMessage.Congratulations)
             mock_console.write.reset_mock()
 
             mock_judge.get_winner.return_value = player2
             self.admin.play(player1, player2)
-            mock_console.write.assert_called_once_with(USERMESSAGE.Condole)
+            mock_console.write.assert_called_once_with(UserMessage.Condole)
             mock_console.write.reset_mock()
 
             mock_judge.get_winner.return_value = None
             self.admin.play(player1, player2)
-            mock_console.write.assert_called_once_with(USERMESSAGE.Draw)
+            mock_console.write.assert_called_once_with(UserMessage.Draw)
             mock_console.write.reset_mock()
 
 
